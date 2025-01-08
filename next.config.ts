@@ -3,24 +3,16 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   transpilePackages: ['three'],
+  reactStrictMode: true,
 
-  webpack(config) {
-    // Add rule to handle .gltf files
+  webpack (config, { isServer }) {
     config.module.rules.push({
-      test: /\.(gltf|glb)$/,
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            outputPath: 'static/assets/',
-            publicPath: '/_next/static/assets/',
-            name: '[name].[hash].[ext]',
-          },
-        },
-      ],
-    });
-
-    return config;
+      test: /\.(glb|gltf)$/,
+      use: {
+        loader: 'file-loader',
+      }
+    })
+    return config
   },
 
   images: {

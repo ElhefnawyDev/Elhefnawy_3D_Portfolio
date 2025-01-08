@@ -1,51 +1,53 @@
 'use client';
-import { Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import {Suspense} from 'react'
+
+import { Canvas, useLoader } from '@react-three/fiber'
+import { OrbitControls, } from '@react-three/drei';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 import CanvasLoader from '../Loader';
 
 const Earth = () => {
   return (
     <Canvas
-      shadows
-      frameloop="demand"
-      dpr={[1, 2]}
-      gl={{ preserveDrawingBuffer: true }}
-      camera={{
-        fov: 60,
-        near: 0.1,
-        far: 300,
-        position: [-6, 4, 8],
-      }}
-    >
+    shadows
+    frameloop='demand'
+    dpr={[1, 2]}
+    gl={{ preserveDrawingBuffer: true }}
+    camera={{
+      fov: 45,
+      near: 0.1,
+      far: 200,
+      position: [-4, 3, 6],
+    }}
+  >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
           autoRotate
-          autoRotateSpeed={2}
           enableZoom={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
-        <ContactModel />
+        <ContactModel/>
       </Suspense>
-    </Canvas>
-  );
-};
-
-function ContactModel() {
-  const computer = useGLTF('/VR/scene.gltf');
-
-  return (
-    <group>
-      <primitive
-        object={computer.scene}
-        position-y={-3}
-        scale={2.5}
-        rotation-y={Math.PI / 4}
-      />
-    </group>
-  );
+    </Canvas>  )
 }
 
-export default Earth;
+
+function ContactModel(){
+  const computer = useLoader(GLTFLoader, '/VR/Scene.gltf');
+
+  return(
+<>
+<primitive
+        object={computer.scene}
+        position={[0, -3, 0]}
+        scale={2.3}
+        rotation={[0, 0, 0]}      
+/>
+</>
+
+  )
+}
+
+export default Earth
